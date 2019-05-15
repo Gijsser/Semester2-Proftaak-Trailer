@@ -3,8 +3,8 @@
 #ifndef _COMMUNICATION_H
 #define _COMMUNICATION_H
 
-#define MESSAGE_START ('\x05\x02\x01\x01')
-#define MESSAGE_END ('\x03\x04')
+#define MESSAGE_START ('#')
+#define MESSAGE_END (';')
 #define DELIMITER (':')
 
 typedef enum { WAITING_FOR_MESSAGE, READING_MESSAGE } ComState;

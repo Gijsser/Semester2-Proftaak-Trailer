@@ -13,14 +13,14 @@ int communication_read_message() {
 
     int incomingByte = Bluetooth.read();
     if (ComStatus == WAITING_FOR_MESSAGE) {
-      if (incomingByte == '\x05') {
+      if (incomingByte == MESSAGE_START) {
         ComStatus = READING_MESSAGE;
         incomingMessage = "";
         return 0;
       }
     }
     if (ComStatus == READING_MESSAGE) {
-      if (incomingByte == '\x04') {
+      if (incomingByte == MESSAGE_END) {
         ComStatus = WAITING_FOR_MESSAGE;
         return 1;
       } else {
