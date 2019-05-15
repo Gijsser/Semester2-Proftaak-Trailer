@@ -1,5 +1,5 @@
 #include <Arduino.h>
-#include <SD.h>
+//#include <SD.h>
 #include <SPI.h>
 
 #include "DataLogger.h"
