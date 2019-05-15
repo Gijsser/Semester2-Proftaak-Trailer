@@ -35,7 +35,7 @@ void trailer_check_message() {
       steeringPosition = map(val, 0, 1023, SERVO_MIN, SERVO_MAX);
     }
     if (Parsed[0] == "BEAT") {
-      communication_send_acknowlegde();
+      communication_send_message("ACK");
     }
   }
 }
@@ -45,7 +45,21 @@ void trailer_check_distance(){
     int newValue = update_sensors(i);
     if (newValue != sensorValue[i]){
       sensorValue[i] = newValue;
-      communication_send_sensor(i, sensorValue[i]);
+      switch (i)
+      {
+      case 1:
+       communication_send_message("SENSOR_LEFT_STATUS", sensorValue[i] );
+      break;
+      case 2:
+       communication_send_message("SENSOR_MIDDLE_LEFT_STATUS", sensorValue[i] );
+      break;
+      case 3:
+      communication_send_message("SENSOR_MIDDLE_RIGHT_STATUS", sensorValue[i] );
+      break;
+      case 4:
+       communication_send_message("SENSOR_RIGHT_STATUS", sensorValue[i] );
+      break;
+      }
     }
   }
 }
