@@ -59,4 +59,3 @@ void communication_parse_message (String *Parsed, int size) { // kijken bij watc
 void comminucation_bluettooth_start(){
   Bluetooth.begin(9600);
 }
-
