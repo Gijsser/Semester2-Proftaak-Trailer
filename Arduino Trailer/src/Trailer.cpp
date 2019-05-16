@@ -7,6 +7,7 @@
 
 Connection ConStatus = NOK;
 TrailerState TrailerStatus = OFF;
+TrailerState TrailerStatus = ASSIST;
 
 int sensorValue[] = {0, 0, 0, 0};
 int steeringPosition = 512;
@@ -33,6 +34,8 @@ void trailer_check_message() {
     if (Parsed[0] == "STEER_POS") {
       int val = Parsed[1].toInt();
       steeringPosition = map(val, 0, 1023, SERVO_MIN, SERVO_MAX);
+      steeringPosition = Parsed[1].toInt();
+      //steeringPosition = map(val, 0, 1023, SERVO_MIN, SERVO_MAX);
     }
     if (Parsed[0] == "BEAT") {
       communication_send_message("ACK");
