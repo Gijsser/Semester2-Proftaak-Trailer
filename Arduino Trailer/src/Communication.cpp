@@ -34,7 +34,7 @@ int communication_read_message() {
 
 void communication_send_message(String message, int value = 0){
   char buffer[50] = "";
-  sprintf(buffer, "%c%s:%i%c", MESSAGE_START, message.c_str, value, MESSAGE_END);
+  sprintf(buffer, "%c%s:%i%c", MESSAGE_START, message.c_str(), value, MESSAGE_END);
   Bluetooth.write(buffer);
 }
 
