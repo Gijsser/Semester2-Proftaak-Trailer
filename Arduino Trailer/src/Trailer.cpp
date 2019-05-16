@@ -10,6 +10,8 @@ TrailerState TrailerStatus = ASSIST;
 
 int sensorValue[] = {0, 0, 0, 0};
 int steeringPosition = 512;
+int lastsensor =0;
+unsigned long sensortimer = 0;
 
 int trailer_get_connection_status() { return ConStatus; }
 int trailer_get_trailer_state() { return TrailerStatus; }
@@ -50,28 +52,35 @@ void trailer_check_message() {
 }
 
 void trailer_check_distance(){
-  for(int i = 0; i <  4; i++){
-    int newValue = update_sensors(i);
-    if (newValue != sensorValue[i]){
-      sensorValue[i] = newValue;
-      switch (i)
-      {
-      case 1:
-       communication_send_message("SENSOR_LEFT_STATUS", sensorValue[i] );
-      break;
-      case 2:
-       communication_send_message("SENSOR_MIDDLE_LEFT_STATUS", sensorValue[i] );
-      break;
-      case 3:
-      communication_send_message("SENSOR_MIDDLE_RIGHT_STATUS", sensorValue[i] );
-      break;
-      case 4:
-       communication_send_message("SENSOR_RIGHT_STATUS", sensorValue[i] );
-      break;
+  if((millis()-sensortimer) >250){
+      sensortimer = millis();
+      lastsensor++;
+      if (lastsensor==4){
+        lastsensor=0;
+      }
+      int i =lastsensor;
+      int newValue = update_sensors(i);
+      if (newValue != sensorValue[i]){
+        sensorValue[i] = newValue;
+        switch (i)
+        {
+        case 1:
+         communication_send_message("SENSOR_LEFT_STATUS", sensorValue[i] );
+        break;
+        case 2:
+         communication_send_message("SENSOR_MIDDLE_LEFT_STATUS", sensorValue[i] );
+        break;
+        case 3:
+        communication_send_message("SENSOR_MIDDLE_RIGHT_STATUS", sensorValue[i] );
+        break;
+        case 4:
+         communication_send_message("SENSOR_RIGHT_STATUS", sensorValue[i] );
+        break;
+        }
       }
     }
   }
-}
+
 
 void trailer_assist_steering(){
   if(ConStatus == OK){
