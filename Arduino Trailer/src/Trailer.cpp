@@ -6,7 +6,6 @@
 #include "Sensors.h"
 
 Connection ConStatus = NOK;
-TrailerState TrailerStatus = OFF;
 TrailerState TrailerStatus = ASSIST;
 
 int sensorValue[] = {0, 0, 0, 0};
