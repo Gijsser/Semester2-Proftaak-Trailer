@@ -25,8 +25,8 @@ void trailer_check_message() {
     String Parsed[2];
     communication_parse_message(Parsed, 2);
 
-    Serial.println("Parsed0 =");
-    Serial.print(Parsed[0]);
+    Serial.print("Parsed0 =");
+    Serial.println(Parsed[0]);
 
     if (Parsed[0] == "TRL_OFF") {
       TrailerStatus = OFF;
@@ -39,7 +39,6 @@ void trailer_check_message() {
     }
     if (Parsed[0] == "STEER_POS") {
       int val = Parsed[1].toInt();
-      steeringPosition = map(val, 0, 1023, SERVO_MIN, SERVO_MAX);
       steeringPosition = Parsed[1].toInt();
       //steeringPosition = map(val, 0, 1023, SERVO_MIN, SERVO_MAX);
     }
@@ -58,23 +57,22 @@ void trailer_check_distance(){
       if (lastsensor==4){
         lastsensor=0;
       }
-      int i =lastsensor;
-      int newValue = update_sensors(i);
-      if (newValue != sensorValue[i]){
-        sensorValue[i] = newValue;
-        switch (i)
+      int newValue = update_sensors(lastsensor);
+      if (newValue != sensorValue[lastsensor]){
+        sensorValue[lastsensor] = newValue;
+        switch (lastsensor)
         {
         case 1:
-         communication_send_message("SENSOR_LEFT_STATUS", sensorValue[i] );
+         communication_send_message("SENSOR_LEFT_STATUS", newValue );
         break;
         case 2:
-         communication_send_message("SENSOR_MIDDLE_LEFT_STATUS", sensorValue[i] );
+         communication_send_message("SENSOR_MIDDLE_LEFT_STATUS", newValue );
         break;
         case 3:
-        communication_send_message("SENSOR_MIDDLE_RIGHT_STATUS", sensorValue[i] );
+        communication_send_message("SENSOR_MIDDLE_RIGHT_STATUS", newValue );
         break;
         case 4:
-         communication_send_message("SENSOR_RIGHT_STATUS", sensorValue[i] );
+         communication_send_message("SENSOR_RIGHT_STATUS", newValue );
         break;
         }
       }
@@ -84,9 +82,9 @@ void trailer_check_distance(){
 
 void trailer_assist_steering(){
   if(ConStatus == OK){
-  servo_set_position(steeringPosition);
-}
-if (ConStatus == NOK) {
-  servo_set_position(SERVO_CENTER);
-}
+    servo_set_position(steeringPosition);
+  }
+  if (ConStatus == NOK) {
+    servo_set_position(SERVO_CENTER);
+  }
 }
