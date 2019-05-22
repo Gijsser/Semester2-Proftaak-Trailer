@@ -9,7 +9,6 @@ int triggerPins[] = {2, 4, 6, 8};
 int echoPins[] = {3, 5, 7, 9};
 
 int update_sensors(int sensor) {
-    int distanceValue;
     digitalWrite(triggerPins[sensor], LOW);
 
     delayMicroseconds(2);
@@ -20,7 +19,7 @@ int update_sensors(int sensor) {
 
     digitalWrite(triggerPins[sensor], LOW);
 
-    distanceValue = pulseIn(echoPins[sensor], HIGH);
+    int distanceValue = pulseIn(echoPins[sensor], HIGH);
 
     distanceValue = distanceValue * 0.034 / 2;
 
