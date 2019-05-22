@@ -24,7 +24,8 @@ void loop() {
       //trailer_assist_steering();
       break;
     }
-  } else if (trailer_get_connection_status() == NOK) {
+  }
+  else if (trailer_get_connection_status() == NOK) {
     Serial.println("Connection NOK");
     trailer_check_message();
     trailer_assist_steering();
