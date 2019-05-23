@@ -1,11 +1,12 @@
 #include "trailerConnection.h"
+#include "Communication.h"
 #include <Arduino.h>
 
 int previousstate = false;
 unsigned long pretime = 0;
 unsigned int debounce = 200;
 
-ConnectionState trailerConnectionToVehicle;
+ConnectionState trailerConnectionToVehicle = NOTCONNECTED;
 
 void trailerConnection_setup() {
   pinMode(CONNECTIONLOOP, INPUT);
@@ -22,7 +23,7 @@ void trailerConnection_Update_Connection() {
     previousstate = buttonstate;
     pretime = millis();
     trailerConnectionToVehicle = buttonstate;
-    //digitalWrite(switchconnect, buttonstate);
+    communication_send_message("TRAILER_CONECTION",buttonstate);
     Serial.print("new trailerConnection = ");Serial.println(buttonstate);
   }
 }
