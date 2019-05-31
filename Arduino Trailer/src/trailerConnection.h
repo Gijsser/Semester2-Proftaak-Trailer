@@ -3,6 +3,7 @@
 #ifndef _TRAILERCONNECTION_H
   #define _TRAILERCONNECTION_H
   #define CONNECTIONLOOP 13
+
   typedef enum  {
     NOTCONNECTED = 0,
     CONNECTED = 1

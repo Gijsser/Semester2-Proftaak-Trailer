@@ -14,13 +14,12 @@ void loop() {
     Serial.println("Connection OK");
     switch (trailer_get_trailer_state()) {
     case OFF:
-
       break;
     case SOUND:
       trailer_check_distance();
       break;
     case ASSIST:
-      //trailer_check_distance();
+      trailer_check_distance();
       trailer_assist_steering();
       break;
     }

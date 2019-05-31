@@ -3,22 +3,19 @@
 Connection ConStatus = NOK;
 TrailerState TrailerStatus = ASSIST;
 
-int sensorValue[] = {0, 0, 0, 0};
-int steeringPosition = 512;
+int steeringPosition = 90;
 
 Connection trailer_get_connection_status() { return ConStatus; }
 TrailerState trailer_get_trailer_state() { return TrailerStatus; }
 
 void trailer_check_message() {
+  static String incommingMessage = "";
   Serial.println("Checking message");
-  if (communication_read_message() == 1) {
+  if (communication_read_message(&incommingMessage)) {
     Serial.println("Received message");
     ConStatus = OK;
     String Parsed[2];
-    communication_parse_message(Parsed, 2);
-
-    Serial.print("Parsed0 =");
-    Serial.println(Parsed[0]);
+    communication_parse_message(Parsed, &incommingMessage);
 
     if (Parsed[0] == "TRL_OFF") {
       TrailerStatus = OFF;
@@ -30,9 +27,7 @@ void trailer_check_message() {
       TrailerStatus = ASSIST;
     }
     if (Parsed[0] == "STEER_POS") {
-      //int val = Parsed[1].toInt();
       steeringPosition = Parsed[1].toInt();
-      //steeringPosition = map(val, 0, 1023, SERVO_MIN, SERVO_MAX);
     }
     if (Parsed[0] == "BEAT") {
       communication_send_message("ACK");
@@ -43,6 +38,7 @@ void trailer_check_message() {
 }
 
 void trailer_check_distance(){
+  static int sensorValue[] = {0, 0, 0, 0};
   static int lastsensor;
   static unsigned long sensortimer;
   if((millis()-sensortimer) >250){

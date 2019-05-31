@@ -9,8 +9,8 @@
 
 typedef enum { WAITING_FOR_MESSAGE, READING_MESSAGE } ComState;
 
-int communication_read_message();
-void communication_parse_message(String *Parsed, int size );
+int communication_read_message(String * incomingMessage);
+void communication_parse_message(String *Parsed, String * incomingMessage );
 void comminucation_bluettooth_start();
 void communication_send_message(String message, int value =0);
 

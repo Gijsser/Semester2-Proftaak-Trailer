@@ -4,9 +4,7 @@ SoftwareSerial Bluetooth(10, 11);
 
 ComState ComStatus = WAITING_FOR_MESSAGE;
 
-String incomingMessage = "";
-
-int communication_read_message() {
+int communication_read_message(String * incomingMessage) {
   if (Bluetooth.available() > 0) {
     Serial.println("Bluetooth available");
     int incomingByte = Bluetooth.read();
@@ -14,18 +12,17 @@ int communication_read_message() {
       if (incomingByte == MESSAGE_START) {
         Serial.println("Starting read");
         ComStatus = READING_MESSAGE;
-        incomingMessage = "";
+        *incomingMessage = "";
         return 0;
       }
     }
     if (ComStatus == READING_MESSAGE) {
       if (incomingByte == MESSAGE_END) {
         ComStatus = WAITING_FOR_MESSAGE;
-        Serial.println(incomingMessage);
         Serial.println("end of message");
         return 1;
       } else {
-        incomingMessage += (char)incomingByte;
+        *incomingMessage += (char)incomingByte;
         Serial.println("adding to message");
         return 0;
       }
@@ -41,21 +38,17 @@ void communication_send_message(String message, int value = 0){
   Serial.println("Sending message");
 }
 
-void communication_parse_message (String *Parsed, int size) { // kijken bij watch.c
-  // String parsed;
-  //
-  // for (uint8_t i = 0; i < incomingMessage.length(); i++) {
-  //   parsed = parsed + incomingMessage[i];
-  // }
+void communication_parse_message (String *Parsed, String * incomingMessage) { // kijken bij watch.c
+  String toParse = *incomingMessage;
 
-  int delimiterIndex = incomingMessage.indexOf(DELIMITER); // als mid-marker
+  int delimiterIndex = toParse.indexOf(DELIMITER); // als mid-marker
 
   if (delimiterIndex > 0) {
-    Parsed[0] = incomingMessage.substring(0, delimiterIndex);
-    Parsed[1] = incomingMessage.substring(delimiterIndex + 1, (incomingMessage.length()));
+    Parsed[0] = toParse.substring(0, delimiterIndex);
+    Parsed[1] = toParse.substring(delimiterIndex + 1, (toParse.length()));
     Serial.println(Parsed[1]);
   } else {
-    Parsed[0] = incomingMessage;
+    Parsed[0] = toParse;
   }
 }
 
