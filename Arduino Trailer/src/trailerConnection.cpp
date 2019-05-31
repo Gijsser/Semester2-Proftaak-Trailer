@@ -2,10 +2,6 @@
 #include "Communication.h"
 #include <Arduino.h>
 
-int previousstate = false;
-unsigned long pretime = 0;
-unsigned int debounce = 200;
-
 ConnectionState trailerConnectionToVehicle = NOTCONNECTED;
 
 void trailerConnection_setup() {
@@ -17,6 +13,9 @@ bool trailerConnection_Get_ConnectionState(){
 }
 
 void trailerConnection_Update_Connection() {
+  static bool previousstate;
+  static unsigned long pretime;
+  const unsigned int debounce = 200;
   int buttonstate = digitalRead(CONNECTIONLOOP);
 
   if((buttonstate!= previousstate) && ((millis() - pretime) > debounce)) {

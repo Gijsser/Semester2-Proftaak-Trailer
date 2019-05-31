@@ -10,8 +10,7 @@ TrailerState TrailerStatus = ASSIST;
 
 int sensorValue[] = {0, 0, 0, 0};
 int steeringPosition = 512;
-int lastsensor =0;
-unsigned long sensortimer = 0;
+
 
 int trailer_get_connection_status() { return ConStatus; }
 int trailer_get_trailer_state() { return TrailerStatus; }
@@ -51,6 +50,8 @@ void trailer_check_message() {
 }
 
 void trailer_check_distance(){
+  static int lastsensor;
+  static unsigned long sensortimer;
   if((millis()-sensortimer) >250){
       sensortimer = millis();
       lastsensor++;

@@ -3,8 +3,6 @@
 #include "Communication.h"
 #include "Sensors.h"
 
-int numberOfSensors = 4;
-
 int triggerPins[] = {2, 4, 6, 8};
 int echoPins[] = {3, 5, 7, 9};
 
