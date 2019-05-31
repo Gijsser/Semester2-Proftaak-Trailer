@@ -6,11 +6,11 @@ ComState ComStatus = WAITING_FOR_MESSAGE;
 
 int communication_read_message(String * incomingMessage) {
   if (Bluetooth.available() > 0) {
-    Serial.println("Bluetooth available");
+    //Serial.println("Bluetooth available");
     int incomingByte = Bluetooth.read();
     if (ComStatus == WAITING_FOR_MESSAGE) {
       if (incomingByte == MESSAGE_START) {
-        Serial.println("Starting read");
+        //Serial.println("Starting read");
         ComStatus = READING_MESSAGE;
         *incomingMessage = "";
         return 0;
@@ -19,11 +19,12 @@ int communication_read_message(String * incomingMessage) {
     if (ComStatus == READING_MESSAGE) {
       if (incomingByte == MESSAGE_END) {
         ComStatus = WAITING_FOR_MESSAGE;
-        Serial.println("end of message");
+        //Serial.println("end of message");
         return 1;
       } else {
         *incomingMessage += (char)incomingByte;
-        Serial.println("adding to message");
+        //Serial.println("adding to message");
+        //Serial.println(*incomingMessage);
         return 0;
       }
     }

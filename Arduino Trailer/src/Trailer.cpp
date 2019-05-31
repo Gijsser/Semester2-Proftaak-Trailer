@@ -1,7 +1,7 @@
 #include "Trailer.h"
 
 Connection ConStatus = NOK;
-TrailerState TrailerStatus = ASSIST;
+TrailerState TrailerStatus = SOUND;
 
 int steeringPosition = 90;
 
@@ -10,7 +10,7 @@ TrailerState trailer_get_trailer_state() { return TrailerStatus; }
 
 void trailer_check_message() {
   static String incommingMessage = "";
-  Serial.println("Checking message");
+  //Serial.println("Checking message");
   if (communication_read_message(&incommingMessage)) {
     Serial.println("Received message");
     ConStatus = OK;
@@ -48,21 +48,31 @@ void trailer_check_distance(){
         lastsensor=0;
       }
       int newValue = update_sensors(lastsensor);
+      Serial.print("newValue= ");
+      Serial.println(newValue);
       if (newValue != sensorValue[lastsensor]){
         sensorValue[lastsensor] = newValue;
         switch (lastsensor)
         {
         case 1:
          communication_send_message("SENSOR_LEFT_STATUS", newValue );
+         Serial.print("sensor 1 = ");
+         Serial.println(newValue);
         break;
         case 2:
          communication_send_message("SENSOR_MIDDLE_LEFT_STATUS", newValue );
+         Serial.print("sensor 2 = ");
+         Serial.println(newValue);
         break;
         case 3:
         communication_send_message("SENSOR_MIDDLE_RIGHT_STATUS", newValue );
+        Serial.print("sensor 3 = ");
+        Serial.println(newValue);
         break;
         case 4:
          communication_send_message("SENSOR_RIGHT_STATUS", newValue );
+         Serial.print("sensor 4 = ");
+         Serial.println(newValue);
         break;
         }
       }

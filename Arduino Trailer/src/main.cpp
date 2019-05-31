@@ -8,10 +8,12 @@ void setup() {
   }
 
 void loop() {
+  static unsigned long hallo = millis();
+  hallo = millis();
   trailer_check_message();
   trailerConnection_Update_Connection();
   if (trailer_get_connection_status() == OK) {
-    Serial.println("Connection OK");
+    //Serial.println("Connection OK");
     switch (trailer_get_trailer_state()) {
     case OFF:
       break;
@@ -19,13 +21,16 @@ void loop() {
       trailer_check_distance();
       break;
     case ASSIST:
-      trailer_check_distance();
+      //trailer_check_distance();
       trailer_assist_steering();
       break;
     }
   }
   else if (trailer_get_connection_status() == NOK) {
-    Serial.println("Connection NOK");
+    //Serial.println("Connection NOK");
     trailer_assist_steering();
   }
+  //Serial.print("loop time = ");
+  //
+  Serial.println(millis()-hallo);
 }
