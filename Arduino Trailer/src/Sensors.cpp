@@ -1,6 +1,3 @@
-#include <Arduino.h>
-
-#include "Communication.h"
 #include "Sensors.h"
 
 int triggerPins[] = {2, 4, 6, 8};

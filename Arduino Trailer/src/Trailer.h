@@ -1,3 +1,8 @@
+#include <Arduino.h>
+#include "Communication.h"
+#include "trailerConnection.h"
+#include "ServoControl.h"
+#include "Sensors.h"
 #ifndef _TRAILER_H
 #define _TRAILER_H
 
@@ -9,9 +14,8 @@ typedef enum { OFF = 0, SOUND = 1, ASSIST = 2 } TrailerState;
 #define SERVO_MIN (20)
 #define SERVO_MAX (160)
 
-int trailer_get_connection_status();
-int trailer_get_trailer_state();
-int trailer_get_com_state();
+Connection trailer_get_connection_status();
+TrailerState trailer_get_trailer_state();
 void trailer_check_message();
 void trailer_check_distance();
 void trailer_assist_steering();

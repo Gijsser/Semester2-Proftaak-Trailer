@@ -1,8 +1,6 @@
-#include <Arduino.h>
-//#include <SD.h>
-#include <SPI.h>
-
 #include "DataLogger.h"
+//#include <SD.h>
+//#include <SPI.h>
 
 void datalog_log_servo(String data) {}
 

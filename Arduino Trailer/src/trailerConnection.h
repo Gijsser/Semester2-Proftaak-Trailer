@@ -1,3 +1,5 @@
+#include <Arduino.h>
+#include "Communication.h"
 #ifndef _TRAILERCONNECTION_H
   #define _TRAILERCONNECTION_H
   #define CONNECTIONLOOP 13

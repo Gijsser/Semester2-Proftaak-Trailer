@@ -1,7 +1,5 @@
 #include <Arduino.h>
-#include "Communication.h"
 #include "Trailer.h"
-#include "trailerConnection.h"
 
 void setup() {
    Serial.begin(9600);

@@ -1,3 +1,4 @@
+#include <Arduino.h>
 #ifndef _DATALOGGER_H
 #define _DATALOGGER_H
 

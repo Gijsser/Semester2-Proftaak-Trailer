@@ -1,6 +1,4 @@
 #include "Communication.h"
-#include <Arduino.h>
-#include <SoftwareSerial.h>
 
 SoftwareSerial Bluetooth(10, 11);
 

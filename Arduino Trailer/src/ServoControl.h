@@ -1,3 +1,5 @@
+#include <Arduino.h>
+#include <Servo.h>
 #ifndef _SERVOCONTROL_H
 #define _SERVOCONTROL_H
 

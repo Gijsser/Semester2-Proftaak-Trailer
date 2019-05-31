@@ -1,6 +1,4 @@
 #include "trailerConnection.h"
-#include "Communication.h"
-#include <Arduino.h>
 
 ConnectionState trailerConnectionToVehicle = NOTCONNECTED;
 

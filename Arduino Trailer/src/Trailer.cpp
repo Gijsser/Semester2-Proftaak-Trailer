@@ -1,9 +1,4 @@
-#include <Arduino.h>
-
-#include "Communication.h"
-#include "ServoControl.h"
 #include "Trailer.h"
-#include "Sensors.h"
 
 Connection ConStatus = NOK;
 TrailerState TrailerStatus = ASSIST;
@@ -11,10 +6,8 @@ TrailerState TrailerStatus = ASSIST;
 int sensorValue[] = {0, 0, 0, 0};
 int steeringPosition = 512;
 
-
-int trailer_get_connection_status() { return ConStatus; }
-int trailer_get_trailer_state() { return TrailerStatus; }
-int trailer_get_com_state() { return TrailerStatus; }
+Connection trailer_get_connection_status() { return ConStatus; }
+TrailerState trailer_get_trailer_state() { return TrailerStatus; }
 
 void trailer_check_message() {
   Serial.println("Checking message");
@@ -37,7 +30,7 @@ void trailer_check_message() {
       TrailerStatus = ASSIST;
     }
     if (Parsed[0] == "STEER_POS") {
-      int val = Parsed[1].toInt();
+      //int val = Parsed[1].toInt();
       steeringPosition = Parsed[1].toInt();
       //steeringPosition = map(val, 0, 1023, SERVO_MIN, SERVO_MAX);
     }
