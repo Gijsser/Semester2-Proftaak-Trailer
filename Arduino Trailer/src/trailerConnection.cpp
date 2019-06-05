@@ -19,7 +19,9 @@ void trailerConnection_Update_Connection() {
   if((buttonstate!= previousstate) && ((millis() - pretime) > debounce)) {
     previousstate = buttonstate;
     pretime = millis();
-    trailerConnectionToVehicle = buttonstate;
+    if(buttonstate == 1){
+    trailerConnectionToVehicle = CONNECTED;
+  }
     communication_send_message("TRAILER_CONECTION",buttonstate);
     Serial.print("new trailerConnection = ");Serial.println(buttonstate);
   }

@@ -1,48 +1,65 @@
-#include "Sensors.h"
+ #include "Sensors.h"
 
-int triggerPins[] = {2, 4, 6, 8};
-int echoPins[] = {3, 5, 7, 9};
-int update_sensors(int sensor) {
-    static unsigned long hallos = millis();
-    hallos = millis();
-    digitalWrite(triggerPins[sensor], LOW);
+DistanceSensor *DistanceSensor::sensorInstance(NULL);
 
-    delayMicroseconds(2);
-
-    digitalWrite(triggerPins[sensor], HIGH);
-
-    delayMicroseconds(10);
-
-    digitalWrite(triggerPins[sensor], LOW);
-
-    int distanceValue = pulseIn(echoPins[sensor], HIGH,5000);
-
-      distanceValue = distanceValue * 0.034 / 2;
-
-      Serial.print("sensor time = ");
-      Serial.println(millis()-hallos);
-    return distanceValue;
-      //return 0;
-
-}
-unsigned long read_pulse(int pin)
+DistanceSensor::DistanceSensor(int trigger, int echo, int interrupt)
+    : trigger(trigger), echo(echo), interrupt(interrupt), isFinished(false)
 {
-    static unsigned long rising_time;  // time of the rising edge
-    static int last_state;             // previous pin state
-    int state = digitalRead(pin);      // current pin state
-    unsigned long pulse_length = 0;    // default return value
-
-    // On rising edge: record current time.
-    if (last_state == LOW && state == HIGH) {
-        rising_time = micros();
-    }
-
-    // On falling edge: report pulse length.
-    if (last_state == HIGH && state == LOW) {
-        unsigned long falling_time = micros();
-        pulse_length = falling_time - rising_time;
-    }
-
-    last_state = state;
-    return pulse_length;
+  if(sensorInstance==0) sensorInstance=this;
 }
+
+void DistanceSensor::sensor_begin(){
+  pinMode(trigger, OUTPUT);
+  digitalWrite(trigger, LOW);
+  pinMode(echo, INPUT);
+  attachInterrupt(echo, sensor_echo_trigger, CHANGE);
+}
+
+void DistanceSensor::sensor_start(){
+  isFinished = false;
+  digitalWrite(trigger, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigger, LOW);
+}
+
+unsigned int DistanceSensor::sensor_get_value(){
+  return (endRead-startRead)/58;//((units)?58:148);
+}
+
+void DistanceSensor::sensor_echo_trigger(){
+  DistanceSensor* currentSensor = DistanceSensor::instance();
+
+  switch(digitalRead(currentSensor->echo)){
+    case HIGH:
+      currentSensor->startRead=micros();
+      break;
+    case LOW:
+      currentSensor->endRead=micros();
+      currentSensor->isFinished=true;
+      break;
+  }
+}
+
+// int update_sensors(int sensor) {
+  //     static unsigned long hallos = millis();
+  //     hallos = millis();
+  //     digitalWrite(triggerPins[sensor], LOW);
+  //
+  //     delayMicroseconds(2);
+  //
+  //     digitalWrite(triggerPins[sensor], HIGH);
+  //
+  //     delayMicroseconds(10);
+  //
+  //     digitalWrite(triggerPins[sensor], LOW);
+  //
+  //     int distanceValue = pulseIn(echoPins[sensor], HIGH,5000);
+  //
+  //       distanceValue = distanceValue * 0.034 / 2;
+  //
+  //       Serial.print("sensor time = ");
+  //       Serial.println(millis()-hallos);
+  //     return distanceValue;
+  //       //return 0;
+  //
+  // }

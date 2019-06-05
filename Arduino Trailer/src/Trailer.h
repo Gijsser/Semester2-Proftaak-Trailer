@@ -19,5 +19,6 @@ TrailerState trailer_get_trailer_state();
 void trailer_check_message();
 void trailer_check_distance();
 void trailer_assist_steering();
+void trailer_setup();
 
 #endif

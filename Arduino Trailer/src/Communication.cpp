@@ -4,39 +4,48 @@ SoftwareSerial Bluetooth(10, 11);
 
 ComState ComStatus = WAITING_FOR_MESSAGE;
 
-int communication_read_message(String * incomingMessage) {
-  if (Bluetooth.available() > 0) {
-    //Serial.println("Bluetooth available");
+void comminucation_bluettooth_start(){  Bluetooth.begin(9600); }
+void communication_set_state(ComState state){  ComStatus = state; }
+ComState communication_get_state(){ return ComStatus; }
+
+
+
+int communication_read_message(String* incomingMessage) {
+
+  int returnval = 0;
+
+  while(Bluetooth.available() > 0) {
+
     int incomingByte = Bluetooth.read();
-    if (ComStatus == WAITING_FOR_MESSAGE) {
-      if (incomingByte == MESSAGE_START) {
-        //Serial.println("Starting read");
-        ComStatus = READING_MESSAGE;
-        *incomingMessage = "";
-        return 0;
-      }
-    }
-    if (ComStatus == READING_MESSAGE) {
-      if (incomingByte == MESSAGE_END) {
-        ComStatus = WAITING_FOR_MESSAGE;
-        //Serial.println("end of message");
-        return 1;
-      } else {
-        *incomingMessage += (char)incomingByte;
-        //Serial.println("adding to message");
-        //Serial.println(*incomingMessage);
-        return 0;
-      }
+
+    switch(ComStatus) {
+      case WAITING_FOR_MESSAGE:
+        if(incomingByte == MESSAGE_START) {
+          ComStatus = READING_MESSAGE;
+          *incomingMessage = "";
+        }
+      break;
+      case READING_MESSAGE:
+        if(incomingByte == MESSAGE_END) {
+          ComStatus = WAITING_FOR_MESSAGE;
+          returnval = 1;
+
+        } else {
+         *incomingMessage += (char)incomingByte;
+        }
+      break;
     }
   }
-  return 0;
+
+  return returnval;
 }
 
-void communication_send_message(String message, int value = 0){
+void communication_send_message(String message, int value){
   char buffer[50] = "";
   sprintf(buffer, "%c%s:%i%c", MESSAGE_START, message.c_str(), value, MESSAGE_END);
   Bluetooth.write(buffer);
   Serial.println("Sending message");
+  Serial.println(buffer);
 }
 
 void communication_parse_message (String *Parsed, String * incomingMessage) { // kijken bij watch.c
@@ -51,8 +60,4 @@ void communication_parse_message (String *Parsed, String * incomingMessage) { //
   } else {
     Parsed[0] = toParse;
   }
-}
-
-void comminucation_bluettooth_start(){
-  Bluetooth.begin(9600);
 }
