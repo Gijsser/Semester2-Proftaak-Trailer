@@ -20,5 +20,6 @@ void trailer_check_message();
 void trailer_check_distance();
 void trailer_assist_steering();
 void trailer_setup();
+void trailer_sent_fake_value();
 
 #endif

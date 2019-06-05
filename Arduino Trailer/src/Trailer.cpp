@@ -2,11 +2,18 @@
 
 Connection ConStatus = NOK;
 TrailerState TrailerStatus = SOUND;
-
+bool sentfakevalue = true;
 int steeringPosition = 90;
+/*
 
-int triggerPins[] = {2, 4, 6, 8};
-int echoPins[] = {3, 5, 7, 9};
+
+
+
+*/
+//int triggerPins[] = {2, 4, 6, 8};
+//int echoPins[] = {3, 5, 7, 9};
+int triggerPins[] = {6, 7, 8, 9};
+int echoPins[] = {2, 3, 4, 5};
 
 bool waitingForAcknowledge = 0;
 
@@ -68,6 +75,7 @@ void trailer_check_distance(){
   static int lastsensor = 0;
   static unsigned long sensortimer;
   if(communication_get_state() == WAITING_FOR_MESSAGE){
+    if(!sentfakevalue){
     if((millis()-sensortimer) >250){
       if(distanceSensor[lastsensor].sensor_is_finished()){
         sensortimer = millis();
@@ -113,6 +121,40 @@ void trailer_check_distance(){
         }
       }
     }
+  }
+  else{
+    trailer_sent_fake_value();
+  }
+  }
+}
+
+void trailer_sent_fake_value(){
+  static int lastsensor = 0;
+  static unsigned long sensortimer;
+  if((millis()-sensortimer) >250){
+    Serial.print("trailer_sent_fake_value =");
+    sensortimer = millis();
+    lastsensor++;
+    if (lastsensor >= 4){
+      lastsensor=0;
+    }
+    int newValue = random(0, 30);
+    Serial.println(newValue);
+    switch (lastsensor ) {
+      case 0:
+        communication_send_message("SENSOR_LEFT_STATUS", newValue );
+        break;
+      case 1:
+        communication_send_message("SENSOR_MIDDLE_LEFT_STATUS", newValue );
+        break;
+      case 2:
+        communication_send_message("SENSOR_MIDDLE_RIGHT_STATUS", newValue );
+        break;
+      case 3:
+        communication_send_message("SENSOR_RIGHT_STATUS", newValue );
+        break;
+    }
+    waitingForAcknowledge = true;
   }
 }
 
