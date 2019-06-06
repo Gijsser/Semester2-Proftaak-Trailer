@@ -9,6 +9,7 @@ void setup() {
 
 void loop() {
   trailer_check_message();
+  //trailerConnection_Update_Connection();
   if (trailer_get_connection_status() == OK) {
    //Serial.println("Connection OK");
     switch (trailer_get_trailer_state()) {
@@ -23,9 +24,10 @@ void loop() {
       break;
     }
   }
-  else if (trailer_get_connection_status() == NOK) {
+  //else if (trailer_get_connection_status() == NOK) {
+  else{
    //Serial.println("Connection NOK");
     trailer_assist_steering();
-    trailerConnection_Update_Connection();
+
   }
 }

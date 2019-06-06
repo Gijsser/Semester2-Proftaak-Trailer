@@ -43,7 +43,7 @@ void trailer_check_message() {
       TrailerStatus = SOUND;
         communication_send_message("ACK");
     }
-    if (Parsed[0] == "TLR_ASSIST") {
+    if (Parsed[0] == "TRL_ASSIST") {
       TrailerStatus = ASSIST;
         communication_send_message("ACK");
     }
@@ -66,8 +66,8 @@ void trailer_check_distance(){
   if(communication_get_state() == WAITING_FOR_MESSAGE){
       if((millis() - timeSinceLastPing) > 100 ){
         int newValue = 0;
-        Serial.println("current sensor");
-        Serial.println(currentSensor);
+        //Serial.print("current sensor = ");
+        //Serial.println(currentSensor);
 
         sensor_update_values(&newValue, currentSensor);
         if (newValue != sensorValue[currentSensor]){
