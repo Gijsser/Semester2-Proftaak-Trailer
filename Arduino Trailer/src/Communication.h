@@ -7,7 +7,7 @@
 #define MESSAGE_END (';')
 #define DELIMITER (':')
 
-typedef enum { WAITING_FOR_MESSAGE, READING_MESSAGE, WAITING_FOR_ACKNOWLEDGE } ComState;
+typedef enum { WAITING_FOR_MESSAGE, READING_MESSAGE } ComState;
 
 int communication_read_message(String * incomingMessage);
 void communication_parse_message(String *Parsed, String * incomingMessage );

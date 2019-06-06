@@ -51,9 +51,10 @@ void communication_send_message(String message, int value){
 void communication_parse_message (String *Parsed, String * incomingMessage) { // kijken bij watch.c
   String toParse = *incomingMessage;
 
-  int delimiterIndex = toParse.indexOf(DELIMITER); // als mid-marker
+  int delimiterIndex = 0;
+  delimiterIndex = toParse.indexOf(DELIMITER); // als mid-marker
 
-  if (delimiterIndex > 0) {
+  if (delimiterIndex != 0) {
     Parsed[0] = toParse.substring(0, delimiterIndex);
     Parsed[1] = toParse.substring(delimiterIndex + 1, (toParse.length()));
     Serial.println(Parsed[1]);
